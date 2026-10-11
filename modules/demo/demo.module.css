@@ -5,32 +5,13 @@
   overflow: hidden;
   border-radius: 20px;
   isolation: isolate;
-  background:
-    radial-gradient(38% 30% at 50% 44%, light-dark(rgb(255 176 64 / 0.3), rgb(255 186 72 / 0.26)), transparent 72%),
-    radial-gradient(
-      120% 85% at 50% 0%,
-      light-dark(#f2f6fd, #1f3164) 0%,
-      light-dark(#cddaf3, #0c1534) 52%,
-      light-dark(#a6bae3, #050914) 100%
-    );
+  background-color: light-dark(#cddaf3, #0c1534);
+  background-image: var(--wallpaper-light);
+  background-size: cover;
+  background-position: center;
   box-shadow:
     0 0 0 1px light-dark(rgb(10 16 40 / 0.12), rgb(10 16 40 / 0.18)),
     0 40px 90px -30px light-dark(rgb(10 20 60 / 0.35), rgb(10 20 60 / 0.55));
-}
-
-.stage::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: repeating-radial-gradient(
-    circle at 50% 44%,
-    transparent 0 54px,
-    light-dark(rgb(50 90 190 / 0.12), rgb(130 165 255 / 0.16)) 55px 56.5px,
-    transparent 57.5px 58px
-  );
-  mask-image: radial-gradient(circle at 50% 44%, #000 12%, transparent 60%);
-  pointer-events: none;
 }
 
 .menuBar {
@@ -228,6 +209,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .stage {
+    background-image: var(--wallpaper-dark);
+  }
+
   .menu,
   .banner {
     color: rgb(240 240 244);

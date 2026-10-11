@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
+import { useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
 import { Launcher } from "@/modules/launcher/Launcher";
 import { SettingsWindow } from "@/modules/settings/SettingsWindow";
 import { useGlobalShortcut } from "@/modules/shortcut/useGlobalShortcut";
@@ -10,7 +10,15 @@ import { Dock } from "./Dock";
 import { LaunchBanner } from "./LaunchBanner";
 import { MenuBar } from "./MenuBar";
 import { OpenHint } from "./OpenHint";
+import lightWallpaper from "@/public/wallpapers/tahoe-light.webp";
+import darkWallpaper from "@/public/wallpapers/tahoe-dark.webp";
 import styles from "./demo.module.css";
+
+// Imported wallpapers share Next.js content-hashed, immutable asset caching.
+const wallpaperStyle = {
+  "--wallpaper-light": `url("${lightWallpaper.src}")`,
+  "--wallpaper-dark": `url("${darkWallpaper.src}")`,
+} as CSSProperties;
 
 export function LauncherDemo() {
   const [store] = useState(() => new DemoStore());
@@ -32,7 +40,7 @@ export function LauncherDemo() {
   }
 
   return (
-    <div ref={stageRef} className={styles.stage} onPointerDown={handleStagePointerDown}>
+    <div ref={stageRef} className={styles.stage} style={wallpaperStyle} onPointerDown={handleStagePointerDown}>
       <MenuBar onOpen={() => store.showLauncher()} onSettings={() => store.openSettings()} />
 
       <div className={styles.desktop}>
