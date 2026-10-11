@@ -1,12 +1,12 @@
 import { BeaconIcon } from "@/shared/BeaconIcon";
-import { REPOSITORY } from "./links";
+import { CONTRIBUTING, ISSUES, RELEASES, REPOSITORY } from "./links";
 import styles from "./landing.module.css";
 
 const LINKS = [
   ["Source", REPOSITORY],
-  ["Releases", `${REPOSITORY}/releases`],
-  ["Issues", `${REPOSITORY}/issues`],
-  ["Contributing", `${REPOSITORY}/blob/master/CONTRIBUTING.md`]
+  ["Releases", RELEASES],
+  ["Issues", ISSUES],
+  ["Contributing", CONTRIBUTING]
 ];
 
 export function Footer() {

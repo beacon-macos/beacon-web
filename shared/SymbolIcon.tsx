@@ -69,7 +69,8 @@ const PATHS = {
       <path d="M12 9v4.2M12 16.5v.1" stroke="var(--symbol-cutout, #fff)" strokeWidth={2} />
     </>
   ),
-  arrowUpRight: <path d="M8 16 16 8m0 0H9.5M16 8v6.5" />
+  arrowUpRight: <path d="M8 16 16 8m0 0H9.5M16 8v6.5" />,
+  arrowDownToLine: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5.5 19.5h13" />
 } as const;
 
 export type SymbolName = keyof typeof PATHS;
