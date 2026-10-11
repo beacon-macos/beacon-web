@@ -1,0 +1,361 @@
+.demo {
+  display: grid;
+  gap: 18px;
+}
+
+.stage {
+  position: relative;
+  container-type: inline-size;
+  height: 720px;
+  overflow: hidden;
+  border-radius: 20px;
+  isolation: isolate;
+  background:
+    radial-gradient(38% 30% at 50% 44%, rgb(255 186 72 / 0.26), transparent 72%),
+    radial-gradient(120% 85% at 50% 0%, #1f3164 0%, #0c1534 52%, #050914 100%);
+  box-shadow:
+    0 0 0 1px rgb(10 16 40 / 0.18),
+    0 40px 90px -30px rgb(10 20 60 / 0.55);
+}
+
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-radial-gradient(circle at 50% 44%, transparent 0 54px, rgb(130 165 255 / 0.16) 55px 56.5px, transparent 57.5px 58px);
+  mask-image: radial-gradient(circle at 50% 44%, #000 12%, transparent 60%);
+  pointer-events: none;
+}
+
+.menuBar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 28px;
+  padding: 0 14px;
+  color: rgb(255 255 255 / 0.92);
+  font-size: 13px;
+  font-weight: 500;
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.menuAppName {
+  font-weight: 700;
+}
+
+.menuSpacer {
+  flex: 1;
+}
+
+.clock {
+  min-width: 7ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.menuExtra {
+  position: relative;
+}
+
+.menuExtraButton {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 22px;
+  border: 0;
+  border-radius: 5px;
+  color: inherit;
+  font-size: 16px;
+  background: transparent;
+}
+
+.menuExtraButton[data-open],
+.menuExtraButton:hover {
+  background: rgb(255 255 255 / 0.18);
+}
+
+.menu {
+  position: absolute;
+  top: 26px;
+  right: 0;
+  display: grid;
+  min-width: 190px;
+  padding: 5px;
+  border-radius: 10px;
+  color: rgb(29 29 31);
+  background: rgb(246 246 248 / 0.86);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.18),
+    0 12px 32px rgb(0 0 0 / 0.3);
+  animation: fade-in 0.12s ease-out;
+}
+
+.menu button {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 5px;
+  color: inherit;
+  font: inherit;
+  font-weight: 400;
+  text-align: left;
+  background: transparent;
+}
+
+.menu button:hover,
+.menu button:focus-visible {
+  outline: none;
+  color: white;
+  background: rgb(0 122 255);
+}
+
+.menuSeparator {
+  height: 1px;
+  margin: 4px 10px;
+  background: rgb(0 0 0 / 0.1);
+}
+
+.desktop {
+  position: absolute;
+  inset: 28px 0 0;
+}
+
+.openHint {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 22px 28px 18px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 18px;
+  color: white;
+  font: inherit;
+  text-align: center;
+  background: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: fade-in 0.3s ease-out;
+}
+
+.openHint:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.openHint img {
+  border-radius: 10px;
+}
+
+.openHintTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.openHintDetail {
+  color: rgb(255 255 255 / 0.6);
+  font-size: 13px;
+}
+
+.bannerRegion {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: min(330px, calc(100% - 20px));
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 14px 11px 11px;
+  border-radius: 16px;
+  color: rgb(29 29 31);
+  background: rgb(246 246 248 / 0.84);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.12),
+    0 12px 32px rgb(0 0 0 / 0.3);
+  animation: banner-in 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.bannerText {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.bannerText > span {
+  overflow: hidden;
+  opacity: 0.75;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bannerText a {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  width: max-content;
+  margin-top: 3px;
+  color: rgb(0 113 227);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bannerText a:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .menu,
+  .banner {
+    color: rgb(240 240 244);
+    background: rgb(40 40 44 / 0.82);
+    box-shadow:
+      0 0 0 0.5px rgb(255 255 255 / 0.16),
+      0 12px 32px rgb(0 0 0 / 0.4);
+  }
+
+  .menuSeparator {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .bannerText a {
+    color: rgb(64 156 255);
+  }
+}
+
+.dock {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  padding: 6px 7px 9px;
+  border-radius: 18px;
+  translate: -50% 0;
+  background: rgb(255 255 255 / 0.14);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  box-shadow:
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.24),
+    0 10px 30px rgb(0 0 0 / 0.25);
+  transform-origin: 50% 100%;
+}
+
+.dockItem {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.runningIndicator {
+  position: absolute;
+  bottom: -6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.8);
+}
+
+.bounce {
+  animation: dock-bounce 0.9s ease-in-out;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.suggestionsLabel {
+  margin-right: 2px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.suggestion {
+  padding: 6px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--surface);
+  transition: border-color 0.15s ease;
+}
+
+.suggestion:hover {
+  border-color: var(--line-strong);
+}
+
+@container (max-width: 720px) {
+  .menuTitle {
+    display: none;
+  }
+}
+
+@container (max-width: 520px) {
+  .dock {
+    scale: 0.82;
+  }
+
+  .openHint {
+    padding: 18px 20px 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stage {
+    height: 620px;
+    border-radius: 16px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+    translate: 24px 0;
+  }
+}
+
+@keyframes dock-bounce {
+  0%,
+  36%,
+  72%,
+  100% {
+    translate: 0 0;
+  }
+
+  18% {
+    translate: 0 -16px;
+  }
+
+  54% {
+    translate: 0 -8px;
+  }
+}
