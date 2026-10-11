@@ -217,12 +217,14 @@
   }
 }
 
-@container (max-width: 520px) {
+@container (max-width: 520px) or (max-height: 560px) {
   .launcher {
     top: 14px;
     max-height: calc(100% - 94px);
   }
+}
 
+@container (max-width: 520px) {
   .searchBar {
     gap: 12px;
     height: 62px;

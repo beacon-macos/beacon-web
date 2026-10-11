@@ -167,30 +167,55 @@
 
 @media (min-width: 1024px) {
   .hero {
-    --stage-height: clamp(500px, 100svh - 150px, 720px);
+    --stage-height: clamp(440px, 100svh - 270px, 720px);
 
-    grid-template-columns: minmax(340px, 1fr) minmax(0, 1.7fr);
-    align-items: center;
-    gap: 56px;
-    padding-top: 8px;
+    gap: 20px;
+    padding-top: 4px;
   }
 
   .intro {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title actions"
+      "lede requirements";
+    align-items: end;
+    gap: 10px 40px;
     justify-items: start;
     text-align: left;
   }
 
   .title {
+    grid-area: title;
     max-width: none;
-    font-size: clamp(44px, 4.4vw, 60px);
+    font-size: clamp(40px, 4vw, 56px);
+  }
+
+  .lede {
+    grid-area: lede;
+    max-width: 40em;
+    margin: 0;
+    font-size: 17px;
   }
 
   .actions {
-    justify-content: start;
+    grid-area: actions;
+    margin: 0;
+  }
+
+  .requirements {
+    grid-area: requirements;
+    align-self: start;
+    justify-self: end;
+    margin: 0;
   }
 
   .demoTitle {
-    margin-top: 28px;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 

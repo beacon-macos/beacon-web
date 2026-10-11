@@ -5,7 +5,7 @@
 
 .stage {
   position: relative;
-  container-type: inline-size;
+  container-type: size;
   height: var(--stage-height, 720px);
   overflow: hidden;
   border-radius: 20px;
