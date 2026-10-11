@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Beacon — A fast, native app launcher for macOS",
+  title: "Beacon - A fast, native app launcher for macOS",
   description:
     "Beacon opens from anywhere with a keyboard shortcut, finds apps with fuzzy, accent-insensitive search, and keeps your favorites one keystroke away. Try it in your browser.",
 };
