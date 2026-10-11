@@ -26,8 +26,8 @@ npm run build
 
 The demo uses the app's own search, ranking, favorites, and shortcut rules, ported to TypeScript:
 
-- `lib/launcher-model.ts` mirrors [`LauncherModel.swift`](https://github.com/beacon-macos/Beacon/blob/master/Beacon/LauncherModel.swift).
-- `lib/shortcut.ts` mirrors [`KeyboardShortcut.swift`](https://github.com/beacon-macos/Beacon/blob/master/Beacon/KeyboardShortcut.swift).
+- `modules/launcher/launcher-model.ts` mirrors [`LauncherModel.swift`](https://github.com/beacon-macos/Beacon/blob/master/Beacon/LauncherModel.swift).
+- `modules/shortcut/shortcut.ts` mirrors [`KeyboardShortcut.swift`](https://github.com/beacon-macos/Beacon/blob/master/Beacon/KeyboardShortcut.swift).
 
 When the app's search or shortcut behavior changes, update these files to match.
 

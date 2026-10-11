@@ -8,15 +8,22 @@ This repository is the website for [Beacon](https://github.com/beacon-macos/Beac
 
 ## Important files
 
-- `app/`: routes, the root layout, metadata, and styles
-- `lib/launcher-model.ts`: port of `Beacon/LauncherModel.swift`: normalization, matching, ranking, selection, and favorites
-- `lib/shortcut.ts`: port of `Beacon/KeyboardShortcut.swift`: key combinations, double-tapped modifiers, and their display
-- `lib/applications.tsx`: the demo's application index and icon drawings
+The code is organized in vertical slices: each folder in `modules/` holds one feature's logic, components, and styles together.
+
+- `app/`: routes, the root layout, metadata, and global styles
+- `modules/landing/`: the home page sections
+- `modules/demo/`: the interactive launcher's desktop: `DemoStore` wraps the launcher model for React, plus the menu bar, Dock, and launch banner
+- `modules/launcher/`: `launcher-model.ts` ports `Beacon/LauncherModel.swift` (normalization, matching, ranking, selection, and favorites), and `Launcher` mirrors `ContentView.swift`
+- `modules/shortcut/`: `shortcut.ts` ports `Beacon/KeyboardShortcut.swift` (key combinations, double-tapped modifiers, and their display), with the shortcut recorder and the page-wide shortcut listener
+- `modules/settings/`: `SettingsWindow` mirrors `SettingsView.swift`
+- `modules/applications/`: the demo's application index and icon drawings
+- `shared/`: UI used by more than one module: symbols, key caps, the Beacon icon, and the themed window
 
 ## Working rules
 
-- Keep the ports in `lib/` behaviorally identical to the Swift sources they mirror. When the app changes that behavior, update the port the same way and reference the app commit or pull request.
+- Keep `launcher-model.ts` and `shortcut.ts` behaviorally identical to the Swift sources they mirror. When the app changes that behavior, update the port the same way and reference the app commit or pull request.
 - Name branches, commits, and pull requests as Beacon's [`CONTRIBUTING.md`](https://github.com/beacon-macos/Beacon/blob/master/CONTRIBUTING.md) specifies. Use these scopes: `demo` for the interactive launcher, `landing` for page content and layout, `seo` for metadata and social images, and `deps` for dependency updates.
+- Put new code in the module it belongs to. Move code to `shared/` only when a second module needs it.
 - Do not add a dependency unless the task requires it.
 - The demo may use the names of Apple's apps, but never their artwork. Demo icons are simple drawings.
 
