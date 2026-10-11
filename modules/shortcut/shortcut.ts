@@ -103,23 +103,6 @@ export function registrationError(shortcut: Shortcut): string | null {
     : null;
 }
 
-export function parseShortcut(value: unknown): Shortcut | null {
-  if (!value || typeof value !== "object") return null;
-  const candidate = value as Record<string, unknown>;
-  if (candidate.kind === "double" && typeof candidate.modifier === "string" && candidate.modifier in MODIFIERS) {
-    return doubleTap(candidate.modifier as Modifier);
-  }
-  if (candidate.kind === "combo" && typeof candidate.code === "string") {
-    const shortcut: Shortcut = {
-      kind: "combo",
-      code: candidate.code,
-      ...modifierFlags((modifier) => candidate[modifier] === true)
-    };
-    return hasModifiers(shortcut) ? shortcut : null;
-  }
-  return null;
-}
-
 class DoubleModifierPressDetector {
   static readonly maximumInterval = 0.4;
 
