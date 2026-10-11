@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
+import { useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
 import { Launcher } from "@/modules/launcher/Launcher";
 import { SettingsWindow } from "@/modules/settings/SettingsWindow";
 import { useGlobalShortcut } from "@/modules/shortcut/useGlobalShortcut";
@@ -17,10 +17,6 @@ export function LauncherDemo() {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const stageRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    store.restore();
-  }, [store]);
 
   useGlobalShortcut(state.shortcut, !state.isRecordingShortcut, () => {
     if (state.isLauncherVisible && launcherRef.current?.contains(document.activeElement)) {

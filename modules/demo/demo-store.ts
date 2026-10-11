@@ -1,8 +1,7 @@
 import { APPLICATIONS, applicationNamed, type Application } from "@/modules/applications/applications";
 import { LauncherModel, SETTINGS_RESULT_ID, type LauncherResult, type LauncherTarget } from "@/modules/launcher/launcher-model";
-import { DEFAULT_SHORTCUT, parseShortcut, registrationError, type Shortcut } from "@/modules/shortcut/shortcut";
-import { isTheme, type Theme } from "@/shared/theme";
-import { load, save } from "./storage";
+import { DEFAULT_SHORTCUT, registrationError, type Shortcut } from "@/modules/shortcut/shortcut";
+import type { Theme } from "@/shared/theme";
 
 export type Launch = {
   id: number;
@@ -81,7 +80,6 @@ export class DemoStore {
     this.model.onOpenSettings = () => {
       this.isSettingsVisible = true;
     };
-    this.model.onFavoritesChanged = (favoriteIDs) => save("favorites", favoriteIDs);
     this.state = this.initialState = this.snapshot();
   }
 
@@ -95,17 +93,6 @@ export class DemoStore {
   getSnapshot = () => this.state;
 
   getServerSnapshot = () => this.initialState;
-
-  restore() {
-    const favoriteIDs = load("favorites");
-    if (Array.isArray(favoriteIDs) && favoriteIDs.every((id) => typeof id === "string")) {
-      this.model.restoreFavorites(favoriteIDs);
-    }
-    this.shortcut = parseShortcut(load("shortcut")) ?? this.shortcut;
-    const theme = load("theme");
-    if (isTheme(theme)) this.theme = theme;
-    this.commit();
-  }
 
   setQuery(query: string) {
     this.model.setQuery(query);
@@ -175,7 +162,6 @@ export class DemoStore {
 
   updateShortcut(shortcut: Shortcut) {
     this.shortcut = shortcut;
-    save("shortcut", shortcut);
     this.commit();
   }
 
@@ -185,7 +171,6 @@ export class DemoStore {
 
   updateTheme(theme: Theme) {
     this.theme = theme;
-    save("theme", theme);
     this.commit();
   }
 
