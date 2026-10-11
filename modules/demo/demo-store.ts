@@ -144,9 +144,8 @@ export class DemoStore {
     return handled;
   }
 
-  showLauncher(query = "") {
+  showLauncher() {
     this.model.prepareForPresentation();
-    if (query) this.model.setQuery(query);
     this.isLauncherVisible = true;
     this.presentation++;
     this.commit();

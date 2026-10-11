@@ -12,8 +12,6 @@ import { MenuBar } from "./MenuBar";
 import { OpenHint } from "./OpenHint";
 import styles from "./demo.module.css";
 
-const SUGGESTIONS = ["xcd", "términal", "sys set", "pasta recipes"];
-
 export function LauncherDemo() {
   const [store] = useState(() => new DemoStore());
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
@@ -38,30 +36,19 @@ export function LauncherDemo() {
   }
 
   return (
-    <div className={styles.demo}>
-      <div ref={stageRef} className={styles.stage} onPointerDown={handleStagePointerDown}>
-        <MenuBar onOpen={() => store.showLauncher()} onSettings={() => store.openSettings()} />
+    <div ref={stageRef} className={styles.stage} onPointerDown={handleStagePointerDown}>
+      <MenuBar onOpen={() => store.showLauncher()} onSettings={() => store.openSettings()} />
 
-        <div className={styles.desktop}>
-          {!state.isLauncherVisible && !state.isSettingsVisible && (
-            <OpenHint shortcut={state.shortcut} onOpen={() => store.showLauncher()} />
-          )}
-          {state.isSettingsVisible && <SettingsWindow store={store} state={state} />}
-          {state.isLauncherVisible && <Launcher ref={launcherRef} store={store} state={state} />}
-          <div className={styles.bannerRegion} aria-live="polite">
-            {state.launch && <LaunchBanner key={state.launch.id} launch={state.launch} onDismiss={() => store.dismissLaunch()} />}
-          </div>
-          <Dock items={state.dock} />
+      <div className={styles.desktop}>
+        {!state.isLauncherVisible && !state.isSettingsVisible && (
+          <OpenHint shortcut={state.shortcut} onOpen={() => store.showLauncher()} />
+        )}
+        {state.isSettingsVisible && <SettingsWindow store={store} state={state} />}
+        {state.isLauncherVisible && <Launcher ref={launcherRef} store={store} state={state} />}
+        <div className={styles.bannerRegion} aria-live="polite">
+          {state.launch && <LaunchBanner key={state.launch.id} launch={state.launch} onDismiss={() => store.dismissLaunch()} />}
         </div>
-      </div>
-
-      <div className={styles.suggestions}>
-        <span className={styles.suggestionsLabel}>Try</span>
-        {SUGGESTIONS.map((query) => (
-          <button key={query} type="button" className={styles.suggestion} onClick={() => store.showLauncher(query)}>
-            {query}
-          </button>
-        ))}
+        <Dock items={state.dock} />
       </div>
     </div>
   );

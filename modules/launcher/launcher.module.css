@@ -7,6 +7,7 @@
   flex-direction: column;
   width: min(720px, calc(100% - 24px));
   height: 500px;
+  max-height: calc(100% - 124px);
   overflow: hidden;
   border-radius: 14px;
   box-shadow:
@@ -216,11 +217,14 @@
   }
 }
 
-@container (max-width: 520px) {
+@container (max-width: 520px) or (max-height: 560px) {
   .launcher {
     top: 14px;
+    max-height: calc(100% - 94px);
   }
+}
 
+@container (max-width: 520px) {
   .searchBar {
     gap: 12px;
     height: 62px;

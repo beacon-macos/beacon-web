@@ -1,12 +1,7 @@
-.demo {
-  display: grid;
-  gap: 18px;
-}
-
 .stage {
   position: relative;
-  container-type: inline-size;
-  height: 720px;
+  container-type: size;
+  height: var(--stage-height, 720px);
   overflow: hidden;
   border-radius: 20px;
   isolation: isolate;
@@ -276,35 +271,6 @@
 
 .bounce {
   animation: dock-bounce 0.9s ease-in-out;
-}
-
-.suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.suggestionsLabel {
-  margin-right: 2px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.suggestion {
-  padding: 6px 13px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  background: var(--surface);
-  transition: border-color 0.15s ease;
-}
-
-.suggestion:hover {
-  border-color: var(--line-strong);
 }
 
 @container (max-width: 720px) {
