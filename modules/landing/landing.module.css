@@ -122,10 +122,10 @@
 
 @media (min-width: 1024px) {
   .hero {
-    --stage-height: clamp(440px, 100svh - 286px, 720px);
+    --stage-height: clamp(400px, 100svh - 333px, 720px);
 
-    gap: 40px;
-    padding-top: 4px;
+    gap: 64px;
+    padding-top: 28px;
   }
 
   .intro {
