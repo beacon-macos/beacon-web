@@ -1,7 +1,49 @@
-import type { GlyphName } from "./glyphs";
+import type { StaticImageData } from "next/image";
+import activityMonitorIcon from "@/public/applications/activity-monitor.png";
+import appStoreIcon from "@/public/applications/app-store.png";
+import booksIcon from "@/public/applications/books.png";
+import calculatorIcon from "@/public/applications/calculator.png";
+import calendarIcon from "@/public/applications/calendar.png";
+import clockIcon from "@/public/applications/clock.png";
+import contactsIcon from "@/public/applications/contacts.png";
+import diskUtilityIcon from "@/public/applications/disk-utility.png";
+import facetimeIcon from "@/public/applications/facetime.png";
+import finderIcon from "@/public/applications/finder.png";
+import fontBookIcon from "@/public/applications/font-book.png";
+import freeformIcon from "@/public/applications/freeform.png";
+import homeIcon from "@/public/applications/home.png";
+import journalIcon from "@/public/applications/journal.png";
+import keynoteIcon from "@/public/applications/keynote.png";
+import mailIcon from "@/public/applications/mail.png";
+import mapsIcon from "@/public/applications/maps.png";
+import messagesIcon from "@/public/applications/messages.png";
+import musicIcon from "@/public/applications/music.png";
+import newsIcon from "@/public/applications/news.png";
+import notesIcon from "@/public/applications/notes.png";
+import numbersIcon from "@/public/applications/numbers.png";
+import pagesIcon from "@/public/applications/pages.png";
+import passwordsIcon from "@/public/applications/passwords.png";
+import photoBoothIcon from "@/public/applications/photo-booth.png";
+import photosIcon from "@/public/applications/photos.png";
+import podcastsIcon from "@/public/applications/podcasts.png";
+import previewIcon from "@/public/applications/preview.png";
+import quicktimePlayerIcon from "@/public/applications/quicktime-player.png";
+import remindersIcon from "@/public/applications/reminders.png";
+import safariIcon from "@/public/applications/safari.png";
+import screenshotIcon from "@/public/applications/screenshot.png";
+import shortcutsIcon from "@/public/applications/shortcuts.png";
+import stocksIcon from "@/public/applications/stocks.png";
+import systemSettingsIcon from "@/public/applications/system-settings.png";
+import terminalIcon from "@/public/applications/terminal.png";
+import texteditIcon from "@/public/applications/textedit.png";
+import timeMachineIcon from "@/public/applications/time-machine.png";
+import tvIcon from "@/public/applications/tv.png";
+import voiceMemosIcon from "@/public/applications/voice-memos.png";
+import weatherIcon from "@/public/applications/weather.png";
+import xcodeIcon from "@/public/applications/xcode.png";
 
 export type ApplicationIcon =
-  | { kind: "glyph"; glyph: GlyphName; top: string; bottom: string; color: string }
+  | { kind: "image"; image: StaticImageData }
   | { kind: "beacon" };
 
 export type Application = {
@@ -10,56 +52,58 @@ export type Application = {
   icon: ApplicationIcon;
 };
 
-const INDEX: [name: string, glyph: GlyphName | "beacon", top?: string, bottom?: string, color?: string][] = [
-  ["Activity Monitor", "pulse", "#4A4A4F", "#1C1C1E", "#5BE37D"],
-  ["App Store", "appStore", "#3FA3FF", "#0A5FFF"],
-  ["Beacon", "beacon"],
-  ["Books", "book", "#FFA53A", "#F26A00"],
-  ["Calculator", "calculator", "#5C5C61", "#2A2A2D", "#FF9F0A"],
-  ["Calendar", "calendar", "#FFFFFF", "#ECECEE", "#FF3B30"],
-  ["Clock", "clock", "#3A3A3D", "#111113"],
-  ["Contacts", "person", "#D5B08A", "#A57A51"],
-  ["Disk Utility", "disk", "#A9B1BA", "#6C7580"],
-  ["FaceTime", "video", "#63E27E", "#18A93F"],
-  ["Finder", "finder", "#71C9FF", "#1478EE"],
-  ["Font Book", "fontBook", "#FFFFFF", "#ECECEE", "#3A3A3C"],
-  ["Freeform", "squiggle", "#FFFFFF", "#ECECEE", "#0A84FF"],
-  ["Home", "house", "#FFBE4D", "#FF8A00"],
-  ["Journal", "bookmark", "#B992FF", "#7547F5"],
-  ["Keynote", "podium", "#45A8FF", "#0062D6"],
-  ["Mail", "mail", "#56B8FF", "#1270EE"],
-  ["Maps", "map", "#7FDDA0", "#22A862"],
-  ["Messages", "bubble", "#72E383", "#22B843"],
-  ["Music", "note", "#FF6E85", "#F22747"],
-  ["News", "news", "#FF5F64", "#E0222B"],
-  ["Notes", "lines", "#FFE27F", "#FFC531", "#6E5200"],
-  ["Numbers", "bars", "#5BDC72", "#1A9A39"],
-  ["Pages", "nib", "#FFB656", "#FF7600"],
-  ["Passwords", "key", "#62CDFB", "#0A72F5"],
-  ["Photo Booth", "camera", "#FF7068", "#C42B27"],
-  ["Photos", "photos", "#FFFFFF", "#F0F0F2"],
-  ["Podcasts", "podcast", "#CB75FF", "#8424DD"],
-  ["Preview", "preview", "#92D5FF", "#3594EC"],
-  ["QuickTime Player", "play", "#4F5A6D", "#1C2230"],
-  ["Reminders", "list", "#FFFFFF", "#ECECEE", "#3A3A3C"],
-  ["Safari", "compass", "#5ECBFF", "#0A70FF"],
-  ["Screenshot", "screenshot", "#B6BBC2", "#7A8089"],
-  ["Shortcuts", "layers", "#FF5E9A", "#5856D6"],
-  ["Stocks", "chart", "#2E2E31", "#050506", "#34C759"],
-  ["System Settings", "gear", "#A9AEB5", "#686D74"],
-  ["Terminal", "terminal", "#3A3A3D", "#0E0E10", "#F2F2F2"],
-  ["TextEdit", "pencil", "#FFFFFF", "#ECECEE", "#3A3A3C"],
-  ["Time Machine", "timeMachine", "#43D8AA", "#0C9573"],
-  ["TV", "tv", "#2E2E31", "#050506"],
-  ["Voice Memos", "wave", "#2E2E31", "#050506", "#FF453A"],
-  ["Weather", "weather", "#5DBBFF", "#1A66DD"],
-  ["Xcode", "hammer", "#52ABFF", "#1360DE"]
+// Static imports produce content-hashed URLs with immutable caching. Replacing
+// an asset changes its URL automatically, so browsers never retain an old icon.
+const INDEX: [name: string, image: StaticImageData | null][] = [
+  ["Activity Monitor", activityMonitorIcon],
+  ["App Store", appStoreIcon],
+  ["Beacon", null],
+  ["Books", booksIcon],
+  ["Calculator", calculatorIcon],
+  ["Calendar", calendarIcon],
+  ["Clock", clockIcon],
+  ["Contacts", contactsIcon],
+  ["Disk Utility", diskUtilityIcon],
+  ["FaceTime", facetimeIcon],
+  ["Finder", finderIcon],
+  ["Font Book", fontBookIcon],
+  ["Freeform", freeformIcon],
+  ["Home", homeIcon],
+  ["Journal", journalIcon],
+  ["Keynote", keynoteIcon],
+  ["Mail", mailIcon],
+  ["Maps", mapsIcon],
+  ["Messages", messagesIcon],
+  ["Music", musicIcon],
+  ["News", newsIcon],
+  ["Notes", notesIcon],
+  ["Numbers", numbersIcon],
+  ["Pages", pagesIcon],
+  ["Passwords", passwordsIcon],
+  ["Photo Booth", photoBoothIcon],
+  ["Photos", photosIcon],
+  ["Podcasts", podcastsIcon],
+  ["Preview", previewIcon],
+  ["QuickTime Player", quicktimePlayerIcon],
+  ["Reminders", remindersIcon],
+  ["Safari", safariIcon],
+  ["Screenshot", screenshotIcon],
+  ["Shortcuts", shortcutsIcon],
+  ["Stocks", stocksIcon],
+  ["System Settings", systemSettingsIcon],
+  ["Terminal", terminalIcon],
+  ["TextEdit", texteditIcon],
+  ["Time Machine", timeMachineIcon],
+  ["TV", tvIcon],
+  ["Voice Memos", voiceMemosIcon],
+  ["Weather", weatherIcon],
+  ["Xcode", xcodeIcon],
 ];
 
-export const APPLICATIONS: Application[] = INDEX.map(([name, glyph, top = "", bottom = "", color = "#FFFFFF"]) => ({
+export const APPLICATIONS: Application[] = INDEX.map(([name, image]) => ({
   id: "app:" + name,
   name,
-  icon: glyph === "beacon" ? { kind: "beacon" } : { kind: "glyph", glyph, top, bottom, color }
+  icon: image ? { kind: "image", image } : { kind: "beacon" }
 }));
 
 export function applicationNamed(name: string): Application {
