@@ -1,5 +1,8 @@
 export const REPOSITORY = "https://github.com/beacon-macos/Beacon";
-export const RELEASES = `${REPOSITORY}/releases`;
-export const LATEST_RELEASE = `${RELEASES}/latest`;
-export const ISSUES = `${REPOSITORY}/issues`;
-export const CONTRIBUTING = `${REPOSITORY}/blob/master/CONTRIBUTING.md`;
+export const LATEST_RELEASE = `${REPOSITORY}/releases/latest`;
+
+export const REPOSITORY_LINKS = [
+  ["Releases", `${REPOSITORY}/releases`],
+  ["Issues", `${REPOSITORY}/issues`],
+  ["Contributing", `${REPOSITORY}/blob/master/CONTRIBUTING.md`]
+];
