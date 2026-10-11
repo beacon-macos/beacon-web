@@ -15,6 +15,7 @@ export function Header() {
           Beacon
         </a>
         <nav className={styles.nav} aria-label="Main">
+          <a href="#extensions">Extensions</a>
           {REPOSITORY_LINKS.map(([label, href]) => (
             <a key={label} href={href}>
               {label}

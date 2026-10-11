@@ -1,8 +1,12 @@
 import { BeaconIcon } from "@/shared/BeaconIcon";
-import { REPOSITORY, REPOSITORY_LINKS } from "./links";
+import { EXTENSIONS_REPOSITORY, REPOSITORY, REPOSITORY_LINKS } from "./links";
 import styles from "./landing.module.css";
 
-const LINKS = [["Source", REPOSITORY], ...REPOSITORY_LINKS];
+const LINKS = [
+  ["Source", REPOSITORY],
+  ["Extensions", EXTENSIONS_REPOSITORY],
+  ...REPOSITORY_LINKS,
+];
 
 export function Footer() {
   return (
