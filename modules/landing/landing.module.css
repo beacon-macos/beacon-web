@@ -70,51 +70,6 @@
   text-wrap: pretty;
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 26px;
-}
-
-.primaryAction,
-.secondaryAction {
-  display: inline-flex;
-  align-items: center;
-  height: 46px;
-  padding: 0 22px;
-  border-radius: 999px;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.primaryAction {
-  color: var(--button-ink);
-  background: var(--button);
-}
-
-.secondaryAction {
-  border: 1px solid var(--line-strong);
-}
-
-.secondaryAction:hover {
-  border-color: var(--ink);
-}
-
-.primaryAction:active,
-.secondaryAction:active {
-  transform: scale(0.98);
-}
-
-.requirements {
-  margin: 16px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
 .demoTitle {
   max-width: 40em;
   margin: 36px 0 0;
@@ -174,39 +129,18 @@
   }
 
   .intro {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "title actions"
-      "lede requirements";
-    align-items: end;
-    gap: 10px 40px;
-    justify-items: start;
-    text-align: left;
+    gap: 10px;
   }
 
   .title {
-    grid-area: title;
     max-width: none;
     font-size: clamp(40px, 4vw, 56px);
   }
 
   .lede {
-    grid-area: lede;
     max-width: 40em;
     margin: 0;
     font-size: 17px;
-  }
-
-  .actions {
-    grid-area: actions;
-    margin: 0;
-  }
-
-  .requirements {
-    grid-area: requirements;
-    align-self: start;
-    justify-self: end;
-    margin: 0;
   }
 
   .demoTitle {
