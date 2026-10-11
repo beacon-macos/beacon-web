@@ -122,9 +122,9 @@
 
 @media (min-width: 1024px) {
   .hero {
-    --stage-height: clamp(440px, 100svh - 270px, 720px);
+    --stage-height: clamp(440px, 100svh - 286px, 720px);
 
-    gap: 20px;
+    gap: 40px;
     padding-top: 4px;
   }
 
