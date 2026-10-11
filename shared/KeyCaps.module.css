@@ -36,11 +36,11 @@
   min-width: 28px;
   height: 26px;
   padding: 0 7px;
-  border: 1px solid rgb(255 255 255 / 0.2);
+  border: 1px solid light-dark(rgb(0 0 0 / 0.12), rgb(255 255 255 / 0.2));
   border-bottom-width: 2px;
   border-radius: 6px;
   font-size: 13px;
-  background: rgb(255 255 255 / 0.1);
+  background: light-dark(rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.1));
 }
 
 .window {
