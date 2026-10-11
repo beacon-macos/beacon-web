@@ -284,6 +284,13 @@
   }
 }
 
+@media (min-width: 1024px) {
+  .stage {
+    width: min(100%, 1040px, calc(var(--stage-height) * 1.6));
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 640px) {
   .stage {
     height: 620px;
