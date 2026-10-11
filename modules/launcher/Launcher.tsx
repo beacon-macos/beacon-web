@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useId, useLayoutEffect, useRef, type KeyboardEvent, type MouseEvent, type Ref } from "react";
-import { AppIcon } from "@/modules/applications/AppIcon";
 import type { DemoState, DemoStore } from "@/modules/demo/demo-store";
 import { BeaconWindow } from "@/shared/BeaconWindow";
 import { scrollBehavior } from "@/shared/motion";
 import { SymbolIcon } from "@/shared/SymbolIcon";
-import type { LauncherResult } from "./launcher-model";
+import { LauncherResultRow } from "./LauncherResultRow";
+import { OPEN_RECENT_PROJECT_ROW } from "./open-recent-project";
 import styles from "./launcher.module.css";
 
 type LauncherProps = {
@@ -127,29 +127,32 @@ export function Launcher({ store, state, ref }: LauncherProps) {
           {results.map((result, index) => {
             const isSelected = result === selectedResult;
             return (
-              <li
+              <LauncherResultRow
                 key={result.id}
                 id={`${listID}-${index}`}
-                className={styles.row}
-                role="option"
-                aria-selected={isSelected}
-                data-selected={isSelected || undefined}
+                content={{
+                  title: result.title,
+                  subtitle: result.subtitle,
+                  symbol: result.symbol,
+                  tint: result.tint,
+                  application: result.target.kind === "application" ? result.target.app : undefined,
+                }}
+                isSelected={isSelected}
+                isFavorite={state.favoriteIDs.includes(result.id)}
                 onMouseMove={(event) => handlePointerMove(event, index)}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => store.runResult(index)}
-              >
-                <ResultIcon result={result} />
-                <span className={styles.rowText}>
-                  <span className={styles.rowTitle}>{result.title}</span>
-                  <span className={styles.rowSubtitle}>{result.subtitle}</span>
-                </span>
-                {state.favoriteIDs.includes(result.id) && (
-                  <SymbolIcon name="starFill" className={styles.favoriteMark} aria-label="Favorite" />
-                )}
-                {isSelected && <kbd className={styles.returnKey}>↵</kbd>}
-              </li>
+              />
             );
           })}
+          {!query && (
+            <LauncherResultRow
+              content={OPEN_RECENT_PROJECT_ROW}
+              isSelected={false}
+              isFavorite
+              isDecorative
+            />
+          )}
         </ul>
       )}
 
@@ -175,20 +178,5 @@ export function Launcher({ store, state, ref }: LauncherProps) {
         </button>
       </div>
     </BeaconWindow>
-  );
-}
-
-function ResultIcon({ result }: { result: LauncherResult }) {
-  if (result.target.kind === "application") {
-    return (
-      <span className={styles.resultIcon}>
-        <AppIcon app={result.target.app} size={30} />
-      </span>
-    );
-  }
-  return (
-    <span className={`${styles.resultIcon} ${styles.symbolIcon}`} style={{ backgroundColor: `var(--tint-${result.tint})` }}>
-      <SymbolIcon name={result.symbol} />
-    </span>
   );
 }

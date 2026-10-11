@@ -1,3 +1,6 @@
+import { LauncherResultRow } from "@/modules/launcher/LauncherResultRow";
+import { OPEN_RECENT_PROJECT_ROW } from "@/modules/launcher/open-recent-project";
+import { BeaconWindow } from "@/shared/BeaconWindow";
 import { SymbolIcon } from "@/shared/SymbolIcon";
 import { EXTENSIONS_CONTRIBUTING, EXTENSIONS_REPOSITORY } from "./links";
 import styles from "./extensions.module.css";
@@ -29,66 +32,17 @@ export function Extensions() {
 
       <figure className={styles.flow}>
         <figcaption className={styles.srOnly}>
-          A Visual Studio Code extension script registers an Open Recent Project command with searchable project
-          results in Beacon.
+          The Visual Studio Code extension appears in Beacon as a favorite Open Recent Project command.
         </figcaption>
-
-        <div className={styles.manifest} aria-hidden="true">
-          <div className={styles.fileBar}>
-            <span>main.js</span>
-            <span className={styles.fileType}>JS</span>
-          </div>
-          <pre className={styles.code}>
-            <span className={styles.codePunctuation}>beacon.</span>
-            <span className={styles.codeKey}>registerCommand</span>
-            <span className={styles.codePunctuation}>(</span>
-            {"\n  "}
-            <span>&quot;open-recent-project&quot;</span>
-            <span className={styles.codePunctuation}>,</span>
-            {"\n  () => recentProjects\n"}
-            <span className={styles.codePunctuation}>);</span>
-          </pre>
-        </div>
-
-        <div className={styles.connector} aria-hidden="true">
-          <span className={styles.packet} />
-        </div>
-
-        <div className={styles.commandPreview} aria-hidden="true">
-          <div className={styles.commandBar}>
-            <span className={styles.extensionGlyph}>{"{}"}</span>
-            <span className={styles.commandName}>
-              <strong>Open Recent Project</strong>
-              <span>Visual Studio Code</span>
-            </span>
-            <kbd>↩</kbd>
-          </div>
-
-          <div className={styles.resultPanel}>
-            <div className={styles.searchLine}>
-              <span className={styles.searchQuery}>bea</span>
-              <span className={styles.caret} />
-              <span className={styles.resultCount}>2 results</span>
-            </div>
-            <div className={styles.resultList}>
-              <div className={styles.selectedResult}>
-                <span className={styles.folderMark} />
-                <span className={styles.resultText}>
-                  <strong>Beacon</strong>
-                  <span>~/Developer/Beacon</span>
-                </span>
-                <span className={styles.openLabel}>Open</span>
-              </div>
-              <div className={styles.result}>
-                <span className={styles.folderMark} />
-                <span className={styles.resultText}>
-                  <strong>Beacon website</strong>
-                  <span>~/Developer/Beacon/website</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BeaconWindow theme="system" staticPosition className={styles.commandPreview} aria-hidden="true">
+          <ul className={styles.previewList} role="listbox">
+            <LauncherResultRow
+              content={OPEN_RECENT_PROJECT_ROW}
+              isSelected
+              isFavorite
+            />
+          </ul>
+        </BeaconWindow>
       </figure>
 
       <dl className={styles.facts}>

@@ -1,0 +1,112 @@
+.row {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 13px;
+  height: 58px;
+  padding: 0 12px;
+  border-radius: 9px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.row[data-selected] {
+  background: var(--selection);
+}
+
+.resultIcon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+}
+
+.symbolIcon {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.rowText {
+  display: grid;
+  flex: 1;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rowTitle,
+.rowSubtitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rowTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.rowSubtitle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.extensionBadge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border: 1px solid var(--keycap-border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  background: var(--keycap-background);
+}
+
+.extensionBadge svg {
+  font-size: 10px;
+}
+
+.favoriteMark {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.returnKey {
+  flex-shrink: 0;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--keycap-border);
+  border-radius: 5px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  background: var(--keycap-background);
+}
+
+@container (max-width: 520px) {
+  .row {
+    gap: 11px;
+    padding: 0 10px;
+  }
+}
+
+@container (max-width: 420px) {
+  .extensionBadge {
+    width: 24px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .extensionLabel {
+    display: none;
+  }
+}

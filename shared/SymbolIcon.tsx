@@ -70,7 +70,27 @@ const PATHS = {
     </>
   ),
   arrowUpRight: <path d="M8 16 16 8m0 0H9.5M16 8v6.5" />,
-  arrowDownToLine: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5.5 19.5h13" />
+  arrowDownToLine: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5.5 19.5h13" />,
+  curlybraces: (
+    <text
+      x="12"
+      y="16"
+      fill="currentColor"
+      stroke="none"
+      textAnchor="middle"
+      fontFamily="ui-monospace, monospace"
+      fontSize="12"
+      fontWeight="700"
+    >
+      {"{}"}
+    </text>
+  ),
+  extension: (
+    <>
+      <rect x="4.5" y="4.5" width="9" height="9" rx="2" />
+      <rect x="10.5" y="10.5" width="9" height="9" rx="2" />
+    </>
+  )
 } as const;
 
 export type SymbolName = keyof typeof PATHS;
