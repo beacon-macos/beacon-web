@@ -1,0 +1,30 @@
+.recorder {
+  width: 190px;
+  height: 34px;
+  border: 1px solid var(--recorder-border);
+  border-radius: 7px;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--recorder);
+  cursor: pointer;
+}
+
+.recorder[data-recording] {
+  border-color: color-mix(in srgb, var(--accent) 75%, transparent);
+  color: var(--muted);
+  background: var(--recorder-active);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+
+.recorder:focus-visible:not([data-recording]) {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+@container (max-width: 520px) {
+  .recorder {
+    width: 100%;
+  }
+}

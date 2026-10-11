@@ -1,8 +1,5 @@
-import type { Application } from "./applications";
-
-// A TypeScript port of Beacon/LauncherModel.swift. Matching, ranking,
-// selection, and favorites follow the native implementation so the demo
-// behaves like the app; keep the two in sync when either changes.
+import type { Application } from "@/modules/applications/applications";
+import type { SymbolName } from "@/shared/SymbolIcon";
 
 export type Tint = "blue" | "green" | "clay" | "sand";
 
@@ -16,21 +13,41 @@ export type LauncherResult = {
   id: string;
   title: string;
   subtitle: string;
-  symbol: "app" | "gearshape-fill" | "grid" | "globe";
+  symbol: SymbolName;
   tint: Tint;
   target: LauncherTarget;
 };
 
 export const SETTINGS_RESULT_ID = "command:settings";
 const WEB_SEARCH_RESULT_ID = "command:web-search";
+const RESULT_LIMIT = 30;
+
+const COMMANDS: LauncherResult[] = [
+  {
+    id: SETTINGS_RESULT_ID,
+    title: "Beacon Settings",
+    subtitle: "Shortcut and launcher preferences",
+    symbol: "gearshapeFill",
+    tint: "clay",
+    target: { kind: "settings" }
+  },
+  {
+    id: "command:applications",
+    title: "Applications",
+    subtitle: "Open folder in Finder",
+    symbol: "grid",
+    tint: "sand",
+    target: { kind: "folder", name: "Applications" }
+  }
+];
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
-export function normalized(value: string): string {
+function normalized(value: string): string {
   return value.normalize("NFD").replace(/\p{M}/gu, "").trim().toLowerCase();
 }
 
-export function matchScore(query: string, candidate: string): number | null {
+function matchScore(query: string, candidate: string): number | null {
   if (!query) return 0;
   if (candidate === query) return 1000;
 
@@ -54,31 +71,28 @@ export function matchScore(query: string, candidate: string): number | null {
   return queryIndex === queryCharacters.length ? score : null;
 }
 
-function webSearchURL(query: string): string {
-  const url = new URL("https://www.google.com/search");
-  url.searchParams.set("q", query);
-  return url.toString();
+function applicationResult(app: Application): LauncherResult {
+  return {
+    id: app.id,
+    title: app.name,
+    subtitle: "Application",
+    symbol: "app",
+    tint: "blue",
+    target: { kind: "application", app }
+  };
 }
 
-function commandResults(): LauncherResult[] {
-  return [
-    {
-      id: SETTINGS_RESULT_ID,
-      title: "Beacon Settings",
-      subtitle: "Shortcut and launcher preferences",
-      symbol: "gearshape-fill",
-      tint: "clay",
-      target: { kind: "settings" }
-    },
-    {
-      id: "command:applications",
-      title: "Applications",
-      subtitle: "Open folder in Finder",
-      symbol: "grid",
-      tint: "sand",
-      target: { kind: "folder", name: "Applications" }
-    }
-  ];
+function webSearchResult(query: string): LauncherResult {
+  const url = new URL("https://www.google.com/search");
+  url.searchParams.set("q", query);
+  return {
+    id: WEB_SEARCH_RESULT_ID,
+    title: `Search the web for “${query}”`,
+    subtitle: "Open in the default browser",
+    symbol: "globe",
+    tint: "green",
+    target: { kind: "url", url: url.toString() }
+  };
 }
 
 export class LauncherModel {
@@ -86,23 +100,24 @@ export class LauncherModel {
   results: LauncherResult[] = [];
   selectedIndex = 0;
   isSettingsButtonSelected = false;
-  favoriteIDs: string[];
+  favoriteIDs: string[] = [];
 
   onRun: ((result: LauncherResult) => void) | null = null;
   onOpenSettings: (() => void) | null = null;
   onDismiss: (() => void) | null = null;
   onFavoritesChanged: ((favoriteIDs: string[]) => void) | null = null;
 
-  private readonly applications: Application[];
+  private readonly candidates: LauncherResult[];
+  private readonly candidatesByID: Map<string, LauncherResult>;
 
   constructor(applications: Application[], favoriteIDs: string[]) {
-    this.applications = applications;
-    this.favoriteIDs = Array.from(new Set(favoriteIDs));
-    this.rebuildResults();
+    this.candidates = [...COMMANDS, ...applications.map(applicationResult)];
+    this.candidatesByID = new Map(this.candidates.map((candidate) => [candidate.id, candidate]));
+    this.restoreFavorites(favoriteIDs);
   }
 
   get canReorderFavoriteForSelection(): boolean {
-    return normalized(this.query) === ""
+    return this.isShowingFavorites
       && !this.isSettingsButtonSelected
       && this.selectedIndex < this.results.length;
   }
@@ -156,7 +171,7 @@ export class LauncherModel {
 
     this.favoriteIDs[favoriteIndex] = destinationID;
     this.favoriteIDs[destinationFavoriteIndex] = selectedID;
-    this.onFavoritesChanged?.(this.favoriteIDs.slice());
+    this.favoritesDidChange();
     this.rebuildResults();
 
     const reorderedIndex = this.results.findIndex((result) => result.id === selectedID);
@@ -196,9 +211,9 @@ export class LauncherModel {
     } else {
       this.favoriteIDs.push(result.id);
     }
-    this.onFavoritesChanged?.(this.favoriteIDs.slice());
+    this.favoritesDidChange();
 
-    if (normalized(this.query) === "") this.rebuildResults();
+    if (this.isShowingFavorites) this.rebuildResults();
     return true;
   }
 
@@ -211,40 +226,28 @@ export class LauncherModel {
     this.onOpenSettings?.();
   }
 
+  private get isShowingFavorites(): boolean {
+    return normalized(this.query) === "";
+  }
+
+  private favoritesDidChange() {
+    this.onFavoritesChanged?.(this.favoriteIDs.slice());
+  }
+
   private rebuildResults() {
     const normalizedQuery = normalized(this.query);
-    const candidates = commandResults().concat(
-      this.applications.map((app): LauncherResult => ({
-        id: app.id,
-        title: app.name,
-        subtitle: "Application",
-        symbol: "app",
-        tint: "blue",
-        target: { kind: "application", app }
-      }))
-    );
-
     if (normalizedQuery === "") {
-      const candidatesByID = new Map(candidates.map((candidate) => [candidate.id, candidate]));
-      this.results = this.favoriteIDs.flatMap((id) => candidatesByID.get(id) ?? []);
+      this.results = this.favoriteIDs.flatMap((id) => this.candidatesByID.get(id) ?? []);
     } else {
-      this.results = candidates
+      this.results = this.candidates
         .flatMap((candidate): [LauncherResult, number][] => {
           const score = matchScore(normalizedQuery, normalized(candidate.title + " " + candidate.subtitle));
           return score === null ? [] : [[candidate, score]];
         })
         .sort((lhs, rhs) => (lhs[1] === rhs[1] ? collator.compare(lhs[0].title, rhs[0].title) : rhs[1] - lhs[1]))
-        .slice(0, 30)
+        .slice(0, RESULT_LIMIT)
         .map(([candidate]) => candidate);
-
-      this.results.push({
-        id: WEB_SEARCH_RESULT_ID,
-        title: `Search the web for “${this.query}”`,
-        subtitle: "Open in the default browser",
-        symbol: "globe",
-        tint: "green",
-        target: { kind: "url", url: webSearchURL(this.query) }
-      });
+      this.results.push(webSearchResult(this.query));
     }
     this.selectedIndex = this.results.length === 0 ? 0 : Math.min(this.selectedIndex, this.results.length - 1);
   }

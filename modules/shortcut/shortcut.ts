@@ -1,11 +1,12 @@
-// A browser version of Beacon/KeyboardShortcut.swift: key combinations,
-// double-tapped modifiers, and how both are displayed.
-
 export type Modifier = "ctrl" | "alt" | "shift" | "meta";
 
+type ModifierFlags = Record<Modifier, boolean>;
+
 export type Shortcut =
-  | { kind: "combo"; code: string; ctrl: boolean; alt: boolean; shift: boolean; meta: boolean }
+  | ({ kind: "combo"; code: string } & ModifierFlags)
   | { kind: "double"; modifier: Modifier };
+
+type Combo = Extract<Shortcut, { kind: "combo" }>;
 
 const MODIFIERS: Record<Modifier, { glyph: string; flag: "ctrlKey" | "altKey" | "shiftKey" | "metaKey" }> = {
   ctrl: { glyph: "⌃", flag: "ctrlKey" },
@@ -27,8 +28,7 @@ const NAMED_KEYS: Record<string, string> = {
   IntlBackslash: "§", Home: "↖", End: "↘", PageUp: "⇞", PageDown: "⇟"
 };
 
-// Combinations a web page never receives because macOS or the browser handles them first.
-const RESERVED = new Set([
+const SYSTEM_RESERVED = new Set([
   "meta+Space", "meta+Tab", "meta+KeyQ", "meta+KeyW", "meta+KeyT", "meta+KeyN",
   "meta+KeyH", "meta+KeyM", "shift+meta+KeyT", "shift+meta+KeyN", "ctrl+Tab", "ctrl+shift+Tab"
 ]);
@@ -41,6 +41,23 @@ function keyName(code: string): string {
   return code;
 }
 
+function isPressed(event: KeyboardEvent, modifier: Modifier): boolean {
+  return event[MODIFIERS[modifier].flag];
+}
+
+function modifierFlags(isSet: (modifier: Modifier) => boolean): ModifierFlags {
+  return { ctrl: isSet("ctrl"), alt: isSet("alt"), shift: isSet("shift"), meta: isSet("meta") };
+}
+
+function activeModifiers(shortcut: Combo): Modifier[] {
+  return DISPLAY_ORDER.filter((modifier) => shortcut[modifier]);
+}
+
+function signature(shortcut: Shortcut): string {
+  if (shortcut.kind === "double") return "double+" + shortcut.modifier;
+  return [...activeModifiers(shortcut), shortcut.code].join("+");
+}
+
 export function doubleTap(modifier: Modifier): Shortcut {
   return { kind: "double", modifier };
 }
@@ -50,18 +67,11 @@ export function keyCapComponents(shortcut: Shortcut): string[] {
     const glyph = MODIFIERS[shortcut.modifier].glyph;
     return [glyph, glyph];
   }
-  const parts = DISPLAY_ORDER.filter((modifier) => shortcut[modifier]).map((modifier) => MODIFIERS[modifier].glyph);
-  parts.push(keyName(shortcut.code));
-  return parts;
+  return [...activeModifiers(shortcut).map((modifier) => MODIFIERS[modifier].glyph), keyName(shortcut.code)];
 }
 
 export function displayName(shortcut: Shortcut): string {
   return keyCapComponents(shortcut).join("");
-}
-
-function signature(shortcut: Shortcut): string {
-  if (shortcut.kind === "double") return "double+" + shortcut.modifier;
-  return [...DISPLAY_ORDER.filter((modifier) => shortcut[modifier]), shortcut.code].join("+");
 }
 
 export function isDefaultShortcut(shortcut: Shortcut): boolean {
@@ -73,32 +83,22 @@ export function isModifierKey(event: KeyboardEvent): boolean {
 }
 
 export function shortcutFromEvent(event: KeyboardEvent): Shortcut {
-  return {
-    kind: "combo",
-    code: event.code,
-    ctrl: event.ctrlKey,
-    alt: event.altKey,
-    shift: event.shiftKey,
-    meta: event.metaKey
-  };
+  return { kind: "combo", code: event.code, ...modifierFlags((modifier) => isPressed(event, modifier)) };
 }
 
 export function hasModifiers(shortcut: Shortcut): boolean {
-  return shortcut.kind === "double" || shortcut.ctrl || shortcut.alt || shortcut.shift || shortcut.meta;
+  return shortcut.kind === "double" || activeModifiers(shortcut).length > 0;
 }
 
 export function matchesEvent(shortcut: Shortcut, event: KeyboardEvent): boolean {
   return shortcut.kind === "combo"
     && !isModifierKey(event)
     && event.code === shortcut.code
-    && event.ctrlKey === shortcut.ctrl
-    && event.altKey === shortcut.alt
-    && event.shiftKey === shortcut.shift
-    && event.metaKey === shortcut.meta;
+    && DISPLAY_ORDER.every((modifier) => isPressed(event, modifier) === shortcut[modifier]);
 }
 
 export function registrationError(shortcut: Shortcut): string | null {
-  return RESERVED.has(signature(shortcut))
+  return SYSTEM_RESERVED.has(signature(shortcut))
     ? "That shortcut is already used by macOS or your browser."
     : null;
 }
@@ -113,10 +113,7 @@ export function parseShortcut(value: unknown): Shortcut | null {
     const shortcut: Shortcut = {
       kind: "combo",
       code: candidate.code,
-      ctrl: candidate.ctrl === true,
-      alt: candidate.alt === true,
-      shift: candidate.shift === true,
-      meta: candidate.meta === true
+      ...modifierFlags((modifier) => candidate[modifier] === true)
     };
     return hasModifiers(shortcut) ? shortcut : null;
   }
@@ -157,17 +154,15 @@ class DoubleModifierPressDetector {
   }
 }
 
-// Feeds modifier key events to one detector per modifier and reports a double tap.
 export class DoubleTapWatcher {
-  private detectors = new Map(DOUBLE_TAP_ORDER.map((modifier) => [modifier, new DoubleModifierPressDetector()]));
+  private readonly detectors = new Map(DOUBLE_TAP_ORDER.map((modifier) => [modifier, new DoubleModifierPressDetector()]));
 
   handle(event: KeyboardEvent): Modifier | null {
     const timestamp = event.timeStamp / 1000;
     let detected: Modifier | null = null;
     for (const [modifier, detector] of this.detectors) {
-      const isPressed = event[MODIFIERS[modifier].flag];
-      const hasOtherModifiers = DISPLAY_ORDER.some((other) => other !== modifier && event[MODIFIERS[other].flag]);
-      if (detector.flagsChanged(isPressed, hasOtherModifiers, timestamp)) detected = modifier;
+      const hasOtherModifiers = DISPLAY_ORDER.some((other) => other !== modifier && isPressed(event, other));
+      if (detector.flagsChanged(isPressed(event, modifier), hasOtherModifiers, timestamp)) detected = modifier;
     }
     return detected;
   }

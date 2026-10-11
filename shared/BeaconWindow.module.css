@@ -1,0 +1,50 @@
+.window {
+  --canvas: light-dark(rgb(248 247 243), rgb(26 26 28));
+  --ink: light-dark(rgb(26 26 24), rgb(237 237 242));
+  --muted: light-dark(rgb(110 107 99), rgb(158 158 166));
+  --placeholder: light-dark(rgb(26 26 24 / 0.32), rgb(237 237 242 / 0.3));
+  --selection: light-dark(rgb(232 236 230), rgb(56 56 61));
+  --divider: light-dark(rgb(0 0 0 / 0.07), rgb(255 255 255 / 0.07));
+  --keycap-background: light-dark(rgb(255 255 255 / 0.78), rgb(255 255 255 / 0.14));
+  --keycap-border: light-dark(rgb(0 0 0 / 0.07), rgb(255 255 255 / 0.12));
+  --tint-blue: light-dark(rgb(230 237 245), rgb(51 61 71));
+  --tint-green: light-dark(rgb(230 240 235), rgb(46 66 59));
+  --tint-clay: light-dark(rgb(240 232 224), rgb(69 61 54));
+  --tint-sand: light-dark(rgb(242 235 224), rgb(71 64 51));
+  --card: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.05));
+  --card-border: light-dark(rgb(0 0 0 / 0.07), rgb(255 255 255 / 0.08));
+  --control-track: light-dark(rgb(0 0 0 / 0.06), rgb(255 255 255 / 0.09));
+  --control-thumb: light-dark(rgb(255 255 255), rgb(255 255 255 / 0.2));
+  --recorder: light-dark(rgb(248 247 243), rgb(255 255 255 / 0.08));
+  --recorder-active: light-dark(rgb(255 255 255), rgb(255 255 255 / 0.18));
+  --recorder-border: light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.14));
+  --error-text: light-dark(rgb(145 64 56), rgb(242 158 143));
+  --error-background: light-dark(rgb(250 235 232), rgb(77 41 36));
+  --accent: light-dark(rgb(0 122 255), rgb(10 132 255));
+  --window-edge: light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.14));
+
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  color-scheme: light;
+  color: var(--ink);
+  font-family: var(--font-system);
+  background: var(--canvas);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  animation: window-in var(--window-in-duration, 0.2s) ease-out;
+}
+
+.window[data-theme="system"] {
+  color-scheme: light dark;
+}
+
+.window[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@keyframes window-in {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
