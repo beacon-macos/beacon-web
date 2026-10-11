@@ -10,9 +10,6 @@ export function Header() {
         Beacon
       </a>
       <nav className={styles.nav} aria-label="Main">
-        <a href="#features">Features</a>
-        <a href="#keyboard">Keyboard</a>
-        <a href="#install">Install</a>
         <a href={REPOSITORY}>GitHub</a>
       </nav>
     </header>

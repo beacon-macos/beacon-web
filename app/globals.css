@@ -5,8 +5,6 @@
   --muted: light-dark(#5d5b55, #a2a3ab);
   --line: light-dark(rgb(23 24 27 / 0.1), rgb(255 255 255 / 0.09));
   --line-strong: light-dark(rgb(23 24 27 / 0.24), rgb(255 255 255 / 0.24));
-  --navy: #0e1a3d;
-  --gold: #f2b23a;
   --button: light-dark(#0e1a3d, #f3f1ea);
   --button-ink: light-dark(#ffffff, #0e1a3d);
 
